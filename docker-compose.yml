@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  node:
+    build: .
+    ports:
+      - 3000:3000
+    networks:
+      - net
+  mongo:
+    image: mongo-express:latest
+    ports: 
+      - 27017:27017
+    networks:
+      - net
+networks: 
+  net:
+    driver: bridge   
