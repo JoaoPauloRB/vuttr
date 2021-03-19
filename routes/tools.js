@@ -3,32 +3,48 @@ const router = require('express').Router();
 const verifyJWT = require('../utils/verifyJWT');
 
 /**
- * @openapi
- * /tools?tag={tag}:
+ * @swagger
+ * /tools:
  *   get:
- *     summary: Retorna a lista de exames
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - "tools"
+ *     summary: "Retorna a lista de exames"
+ *     produces:
+ *       - "application/json"
  *     parameters:
- *       - name: tag
- *         in: query
- *         description: Tag das ferramentas
- *         type: string
+ *       - name: "tag"
+ *         in: "query"
+ *         description: "Tag das ferramentas"
+ *         type: "string"
  *     responses:
- *       '200':
- *         description: Array com as ferramentas
- *         content:
- *           application/json:
- *             schema: 
- *               type: array
- *               items: 
- *                 type: object
- *                 porperties:
- *                   title: string
- *                   link: string
- *                   description: string
- *                   userId: string
- *                   tags: array
- *                   items:
- *                   type: string
+ *       "401":
+ *         description: "Não autorizado"
+ *       "200":
+ *         description: "Array com as ferramentas"
+ *         schema: 
+ *           type: "array"
+ *           items: 
+ *             $ref: "#/definitions/Tool"
+ * definitions:
+ *   Tool:
+ *     type: "object"
+ *     properties:
+ *       _id:
+ *         type: "string"
+ *       title:
+ *         type: "string"
+ *       link:
+ *         type: "string"
+ *       description:
+ *         type: "string"
+ *       userId:
+ *         type: "string"
+ *       tags:
+ *          type: "array"
+ *          items:
+ *            type: "string" 
  */
 router.get('/tools', verifyJWT, async (req, res, next) => {
     const tag = req.query.tag;
