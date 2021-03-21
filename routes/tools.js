@@ -27,6 +27,69 @@ const verifyJWT = require('../utils/verifyJWT');
  *           type: "array"
  *           items: 
  *             $ref: "#/definitions/Tool"
+ *   post:
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - "tools"
+ *     summary: "Adiciona uma ferramenta"
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - name: "Informações da ferramenta"
+ *         in: "body"
+ *         description: "Dados da ferramenta"
+ *         schema:
+ *           $ref: "#/definitions/Tool"
+ *     responses:
+ *       "401":
+ *         description: "Não autorizado"
+ *       "200":
+ *         description: "Ferramenta adicionada"
+ *         schema: 
+ *           type: "array"
+ *           items: 
+ *             $ref: "#/definitions/Tool"
+ *   delete:
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - "tools"
+ *     summary: "Retorna a lista de exames"
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - name: "id"
+ *         in: "path"
+ *         description: "id ferramenta"
+ *         type: integer
+ *     responses:
+ *       "401":
+ *         description: "Não autorizado"
+ *       "204":
+ *         description: "Ferramenta deletada"
+ *   put:
+ *     security:
+ *       - Bearer: []
+ *     tags:
+ *       - "tools"
+ *     summary: "Altera uma ferramenta"
+ *     produces:
+ *       - "application/json"
+ *     parameters:
+ *       - name: "Informações da ferramenta"
+ *         in: "body"
+ *         description: "Dados da ferramenta"
+ *         $ref: "#/definitions/Tool"
+ *     responses:
+ *       "401":
+ *         description: "Não autorizado"
+ *       "200":
+ *         description: "Ferramenta atualizada"
+ *         schema: 
+ *           type: "array"
+ *           items: 
+ *             $ref: "#/definitions/Tool"
  * definitions:
  *   Tool:
  *     type: "object"
@@ -69,15 +132,6 @@ router.put('/tools/:id', verifyJWT, async (req, res, next) => {
     res.json(updatedTool);
 });
 
-/**
- * @openapi
- * /tools:
- * delete:
- *  description: Remove uma ferramenta por id
- * responses:
- *  '204':
- *   - summary: Remove uma ferramenta por id
- */
 router.delete('/tools/:id', verifyJWT, async (req, res, next) => {
     const id = req.params.id;
     await Tools.findByIdAndDelete(id);
